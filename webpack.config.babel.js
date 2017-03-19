@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ngAnnotatePlugin = require('ng-annotate-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
 const { resolve } = require('path');
 const { getIfUtils, removeEmpty } = require('webpack-config-utils');
@@ -82,11 +83,14 @@ module.exports = env => {
       ifProd(new webpack.optimize.CommonsChunkPlugin({
         names: ['vendor', 'manifest']
       })),
+      ifProd(new ngAnnotatePlugin({
+        add: true,
+        single_quotes: true
+      })),
       new OfflinePlugin(),
       new webpack.DefinePlugin({
         'process.env': {
-          NODE_ENV: ifProd('"production"', '"development"'),
-          BABEL_ENV: ifProd('"production"', '"development"')
+          NODE_ENV: ifProd('"production"', '"development"')
         }
       }),
       new HtmlWebpackPlugin({

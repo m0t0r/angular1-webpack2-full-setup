@@ -22,6 +22,7 @@ const appRoutes = ($stateProvider, $urlRouterProvider, $locationProvider) => {
       },
       resolve: {
         lazyLoad: ($ocLazyLoad) => {
+          'ngInject';
           return System.import('./page/lazy-page-1/lazy-page-1.module.js')
             .then(module => $ocLazyLoad.load({name: module.default}));
         }
@@ -36,6 +37,7 @@ const appRoutes = ($stateProvider, $urlRouterProvider, $locationProvider) => {
       },
       resolve: {
         lazyLoad: ($ocLazyLoad) => {
+          'ngInject';
           return System.import('./page/lazy-page-2/lazy-page-2.module.js')
             .then(module => $ocLazyLoad.load({name: module.default}));
         }
