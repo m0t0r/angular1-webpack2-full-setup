@@ -1,5 +1,5 @@
-import { resolve } from 'path';
-import { getIfUtils } from 'webpack-config-utils';
+const { resolve } = require('path');
+const { getIfUtils } = require('webpack-config-utils');
 
 module.exports = env => {
   const { ifProd, ifNotProd } = getIfUtils(env);

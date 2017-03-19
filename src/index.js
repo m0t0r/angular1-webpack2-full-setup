@@ -17,3 +17,5 @@ angular
     const body = document.getElementsByTagName('body')[0];
     angular.bootstrap(body, [appModule.name]);
   });
+
+export default appModule.name;
