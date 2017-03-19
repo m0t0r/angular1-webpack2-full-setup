@@ -1,0 +1,53 @@
+import { resolve } from 'path';
+import { getIfUtils } from 'webpack-config-utils';
+
+module.exports = env => {
+  const { ifProd, ifNotProd } = getIfUtils(env);
+
+  return {
+    context: resolve('src'),
+    entry: './index.js',
+    output: {
+      filename: 'bundle.js',
+      path: resolve('dist'),
+      publicPath: '/dist/',
+      pathinfo: ifNotProd()
+    },
+    devtool: ifProd('source-map', 'eval'),
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          loader: 'babel-loader',
+          exclude: /node_modules/
+        },
+        {
+          test: /\.css$/,
+          use: [
+            {loader: 'style-loader'},
+            {loader: 'css-loader'}
+          ]
+        },
+        {
+          test: /\.scss$/,
+          use: [
+            {loader: 'style-loader'},
+            {loader: 'css-loader'},
+            {loader: 'sass-loader'}
+          ]
+        },
+        {
+          test: /\.html$/,
+          use: [
+            {
+              loader: 'html-loader',
+              options: {
+                minimize: true
+              }
+            }
+          ],
+        }
+      ]
+    }
+  }
+};
