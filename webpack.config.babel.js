@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin')
 const { resolve } = require('path');
 const { getIfUtils, removeEmpty } = require('webpack-config-utils');
 
@@ -71,11 +72,14 @@ module.exports = env => {
       ]
     },
     plugins: removeEmpty([
+      ifProd(new InlineManifestWebpackPlugin({
+        name: 'webpackManifest'
+      })),
       ifProd(new webpack.optimize.CommonsChunkPlugin({
-        name: 'vendor',
+        names: ['vendor', 'manifest']
       })),
       new HtmlWebpackPlugin({
-        template: './index.html',
+        template: './index.ejs',
         inject: 'head',
       }),
     ])

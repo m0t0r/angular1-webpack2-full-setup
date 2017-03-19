@@ -1,5 +1,3 @@
-//import appModule from './index';
-
 describe('App component', () => {
   let $componentController;
 
