@@ -14,6 +14,15 @@ module.exports = env => {
       pathinfo: ifNotProd()
     },
     devtool: ifProd('source-map', 'eval'),
+    stats: {
+      colors: true,
+      reasons: true,
+      chunks: true
+    },
+    devServer: {
+      historyApiFallback: true,
+      inline: true
+    },
     module: {
       rules: [
         {
@@ -48,6 +57,8 @@ module.exports = env => {
           ],
         }
       ]
-    }
+    },
+    plugins: [
+    ]
   }
 };
