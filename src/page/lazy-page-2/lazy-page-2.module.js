@@ -1,5 +1,3 @@
-import angular from 'angular';
-
 import LazyPage2Component from './lazy-page-2-component/lazy-page-2-component.component';
 
 const lazyPage2Module = angular

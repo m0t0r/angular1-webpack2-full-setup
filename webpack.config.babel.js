@@ -1,16 +1,28 @@
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { resolve } = require('path');
-const { getIfUtils } = require('webpack-config-utils');
+const { getIfUtils, removeEmpty } = require('webpack-config-utils');
 
 module.exports = env => {
   const { ifProd, ifNotProd } = getIfUtils(env);
 
   return {
     context: resolve('src'),
-    entry: './index.js',
+    entry: {
+      app: './index.js',
+      vendor: [
+        'angular',
+        'angular-material',
+        'angular-material/angular-material.scss',
+        'angular-animate',
+        'angular-aria',
+        'angular-ui-router',
+        'oclazyload'
+      ]
+    },
     output: {
-      filename: 'bundle.js',
+      filename: ifProd('bundle.[name].[chunkhash].js', 'bundle.[name].js'),
       path: resolve('dist'),
-      publicPath: '/dist/',
       pathinfo: ifNotProd()
     },
     devtool: ifProd('source-map', 'eval'),
@@ -58,7 +70,14 @@ module.exports = env => {
         }
       ]
     },
-    plugins: [
-    ]
+    plugins: removeEmpty([
+      ifProd(new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor',
+      })),
+      new HtmlWebpackPlugin({
+        template: './index.html',
+        inject: 'head',
+      }),
+    ])
   }
 };

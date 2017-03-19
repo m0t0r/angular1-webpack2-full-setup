@@ -7,7 +7,11 @@ const fileGlob = 'src/**/*.spec.js';
 const srcGlob = 'src/**/!(*.test|*.spec).js';
 const vendorGlob = [
   'node_modules/angular/angular.js',
-  'node_modules/angular-mocks/angular-mocks.js'
+  'node_modules/angular-mocks/angular-mocks.js',
+  'node_modules/angular-aria/angular-aria.js',
+  'node_modules/angular-animate/angular-animate.js',
+  'node_modules/angular-ui-router/release/angular-ui-router.js',
+  'node_modules/oclazyload/dist/ocLazyLoad.js'
 ];
 
 module.exports = config => {
@@ -31,9 +35,7 @@ module.exports = config => {
 
 
     // list of files to exclude
-    exclude: [
-      './src/index.js'
-    ],
+    exclude: [ ],
 
 
     // preprocess matching files before serving them to the browser

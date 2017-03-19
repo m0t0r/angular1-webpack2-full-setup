@@ -1,9 +1,9 @@
-import appModule from './index';
+//import appModule from './index';
 
 describe('App component', () => {
   let $componentController;
 
-  beforeEach(window.module(appModule));
+  beforeEach(angular.mock.module('app'));
 
   beforeEach(inject(($injector) => {
     $componentController = $injector.get('$componentController');
