@@ -1,8 +1,10 @@
 // Karma configuration
+process.env.BABEL_ENV = 'test';
 
 const webpackConfig = require('./webpack.config.babel')({test: true});
 
 const fileGlob = 'src/**/*.spec.js';
+const srcGlob = 'src/**/!(*.test|*.spec).js';
 const vendorGlob = [
   'node_modules/angular/angular.js',
   'node_modules/angular-mocks/angular-mocks.js'
@@ -23,19 +25,22 @@ module.exports = config => {
     // list of files / patterns to load in the browser
     files: [
       ...vendorGlob,
+      srcGlob,
       {pattern: fileGlob, watched: false}
     ],
 
 
     // list of files to exclude
     exclude: [
+      './src/index.js'
     ],
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      [fileGlob]: ['webpack']
+      [fileGlob]: ['webpack'],
+      [srcGlob]: ['webpack']
     },
 
     // webpack config
@@ -46,8 +51,15 @@ module.exports = config => {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['progress', 'coverage'],
 
+    coverageReporter: {
+      reporters: [
+        {type: 'lcov', dir: 'coverage/', subdir: '.'},
+        {type: 'json', dir: 'coverage/', subdir: '.'},
+        {type: 'text-summary'},
+      ],
+    },
 
     // web server port
     port: 9876,
