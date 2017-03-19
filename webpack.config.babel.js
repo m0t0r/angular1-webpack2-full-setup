@@ -1,11 +1,15 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin')
+const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const { resolve } = require('path');
 const { getIfUtils, removeEmpty } = require('webpack-config-utils');
 
 module.exports = env => {
   const { ifProd, ifNotProd } = getIfUtils(env);
+
+  const extractCSS = new ExtractTextPlugin(ifProd('styles.[name].[chunkhash].css', 'styles.[name].css'));
+  const extractSASS = new ExtractTextPlugin(ifProd('styles.[name].[chunkhash].css', 'styles.[name].css'));
 
   return {
     context: resolve('src'),
@@ -45,18 +49,17 @@ module.exports = env => {
         },
         {
           test: /\.css$/,
-          use: [
-            {loader: 'style-loader'},
-            {loader: 'css-loader'}
-          ]
+          use: extractCSS.extract({
+            fallback: 'style-loader',
+            use: ['css-loader']
+          })
         },
         {
           test: /\.scss$/,
-          use: [
-            {loader: 'style-loader'},
-            {loader: 'css-loader'},
-            {loader: 'sass-loader'}
-          ]
+          use: extractSASS.extract({
+            fallback: 'style-loader',
+            use: ['css-loader', 'sass-loader']
+          })
         },
         {
           test: /\.html$/,
@@ -79,9 +82,10 @@ module.exports = env => {
         names: ['vendor', 'manifest']
       })),
       new HtmlWebpackPlugin({
-        template: './index.ejs',
-        inject: 'head',
+        template: './index.ejs'
       }),
+      extractCSS,
+      extractSASS
     ])
   }
 };
