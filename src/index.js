@@ -1,6 +1,12 @@
+import * as OfflinePluginRuntime from 'offline-plugin/runtime';
 import AppComponent from './app.component';
 
 import appRoutes from './app.routes';
+
+// Install Service Worker in production
+if (process.env.NODE_ENV === 'production') {
+  OfflinePluginRuntime.install();
+}
 
 const appModule = angular
   .module('app', [

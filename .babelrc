@@ -3,6 +3,9 @@
     ["es2015", {"modules": false}]
   ],
   "env": {
+    "production": {
+      "plugins": ["angularjs-annotate"]
+    },
     "test": {
       "plugins": [
         [
